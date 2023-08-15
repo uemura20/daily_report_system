@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * 日報情報について画面の入力値・出力値を扱うViewモデル
+ * 商談情報について画面の入力値・出力値を扱うViewモデル
  *
  */
 @Getter //全てのクラスフィールドについてgetterを自動生成する(Lombok)
 @Setter //全てのクラスフィールドについてsetterを自動生成する(Lombok)
 @NoArgsConstructor //引数なしコンストラクタを自動生成する(Lombok)
 @AllArgsConstructor //全てのクラスフィールドを引数にもつ引数ありコンストラクタを自動生成する(Lombok)
-public class ReportView {
+public class MeetingView {
 
     /**
      * id
@@ -24,24 +24,34 @@ public class ReportView {
     private Integer id;
 
     /**
-     * 日報を登録した従業員
+     * 商談を登録した従業員
      */
     private EmployeeView employee;
 
     /**
-     * いつの日報かを示す日付
+     * いつの商談かを示す日付
      */
-    private LocalDate reportDate;
+    private LocalDate meetingDate;
 
     /**
-     * 日報のタイトル
+     * 商談の会社名
      */
-    private String title;
+    private String companyName;
 
     /**
-     * 日報の内容
+     * 商談のお客様名
      */
-    private String reportContent;
+    private String customerName;
+
+    /**
+     * 商談の内容
+     */
+    private String meetingContent;
+
+    /**
+     * 商談の進捗状況
+     */
+    private String status;
 
     /**
      * 登録日時

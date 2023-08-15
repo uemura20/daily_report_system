@@ -22,23 +22,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * 日報データのDTOモデル
+ * 商談データのDTOモデル
  *
  */
-@Table(name = JpaConst.TABLE_REP)
+@Table(name = JpaConst.TABLE_MET)
 @NamedQueries({
     @NamedQuery(
-            name = JpaConst.Q_REP_GET_ALL,
-            query = JpaConst.Q_REP_GET_ALL_DEF),
+            name = JpaConst.Q_MET_GET_ALL,
+            query = JpaConst.Q_MET_GET_ALL_DEF),
     @NamedQuery(
-            name = JpaConst.Q_REP_COUNT,
-            query = JpaConst.Q_REP_COUNT_DEF),
+            name = JpaConst.Q_MET_COUNT,
+            query = JpaConst.Q_MET_COUNT_DEF),
     @NamedQuery(
-            name = JpaConst.Q_REP_GET_ALL_MINE,
-            query = JpaConst.Q_REP_GET_ALL_MINE_DEF),
+            name = JpaConst.Q_MET_GET_ALL_MINE,
+            query = JpaConst.Q_MET_GET_ALL_MINE_DEF),
     @NamedQuery(
-            name = JpaConst.Q_REP_COUNT_ALL_MINE,
-            query = JpaConst.Q_REP_COUNT_ALL_MINE_DEF)
+            name = JpaConst.Q_MET_COUNT_ALL_MINE,
+            query = JpaConst.Q_MET_COUNT_ALL_MINE_DEF)
 })
 
 @Getter //全てのクラスフィールドについてgetterを自動生成する(Lombok)
@@ -46,52 +46,67 @@ import lombok.Setter;
 @NoArgsConstructor //引数なしコンストラクタを自動生成する(Lombok)
 @AllArgsConstructor //全てのクラスフィールドを引数にもつ引数ありコンストラクタを自動生成する(Lombok)
 @Entity
-public class Report {
+public class Meeting {
 
     /**
      * id
      */
     @Id
-    @Column(name = JpaConst.REP_COL_ID)
+    @Column(name = JpaConst.MET_COL_ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
-     * 日報を登録した従業員
+     * 商談を登録した従業員
      */
     @ManyToOne
-    @JoinColumn(name = JpaConst.REP_COL_EMP, nullable = false)
+    @JoinColumn(name = JpaConst.MET_COL_EMP, nullable = false)
     private Employee employee;
 
     /**
-     * いつの日報かを示す日付
+     * いつの商談かを示す日付
      */
-    @Column(name = JpaConst.REP_COL_REP_DATE, nullable = false)
-    private LocalDate reportDate;
+    @Column(name = JpaConst.MET_COL_REP_DATE, nullable = false)
+    private LocalDate meetingDate;
 
     /**
-     * 日報のタイトル
-     */
-    @Column(name = JpaConst.REP_COL_TITLE, length = 255, nullable = false)
-    private String title;
-
-    /**
-     * 日報の内容
+     * 商談の会社名
      */
     @Lob
-    @Column(name = JpaConst.REP_COL_CONTENT, nullable = false)
-    private String reportContent;
+    @Column(name = JpaConst.MET_COL_COMPANY_NAME, nullable = false)
+    private String company_name;
+
+    /**
+     * 商談のお客様名
+     */
+    @Lob
+    @Column(name = JpaConst.MET_COL_CUSTOMER_NAME, nullable = false)
+    private String customer_name;
+
+    /**
+     * 商談の内容
+     */
+    @Lob
+    @Column(name = JpaConst.MET_COL_CONTENT, nullable = false)
+    private String meetingContent;
+
+    /**
+     * 商談の進捗状況
+     */
+    @Lob
+    @Column(name = JpaConst.MET_COL_STATUS, nullable = false)
+    private String status;
 
     /**
      * 登録日時
      */
-    @Column(name = JpaConst.REP_COL_CREATED_AT, nullable = false)
+    @Column(name = JpaConst.MET_COL_CREATED_AT, nullable = false)
     private LocalDateTime createdAt;
 
     /**
      * 更新日時
      */
-    @Column(name = JpaConst.REP_COL_UPDATED_AT, nullable = false)
+    @Column(name = JpaConst.MET_COL_UPDATED_AT, nullable = false)
     private LocalDateTime updatedAt;
 
 }

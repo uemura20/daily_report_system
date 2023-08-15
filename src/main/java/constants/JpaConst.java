@@ -36,13 +36,27 @@ public interface JpaConst {
     String REP_COL_EMP = "employee_id"; //日報を作成した従業員のid
     String REP_COL_REP_DATE = "report_date"; //いつの日報かを示す日付
     String REP_COL_TITLE = "title"; //日報のタイトル
-    String REP_COL_CONTENT = "content"; //日報の内容
+    String REP_COL_CONTENT = "report_content"; //日報の内容
     String REP_COL_CREATED_AT = "created_at"; //登録日時
     String REP_COL_UPDATED_AT = "updated_at"; //更新日時
+
+    //商談テーブル
+    String TABLE_MET = "meetings"; //テーブル名
+    //商談テーブルカラム
+    String MET_COL_ID = "id"; //id
+    String MET_COL_EMP = "employee_id"; //商談を作成した従業員のid
+    String MET_COL_REP_DATE = "meeting_date"; //いつの商談かを示す日付
+    String MET_COL_COMPANY_NAME = "company_name"; //商談の会社名
+    String MET_COL_CUSTOMER_NAME = "customer_name"; //商談のお客様名
+    String MET_COL_CONTENT = "meeting_content"; //商談の内容
+    String MET_COL_STATUS = "status"; //商談の進捗状況
+    String MET_COL_CREATED_AT = "created_at"; //登録日時
+    String MET_COL_UPDATED_AT = "updated_at"; //更新日時
 
     //Entity名
     String ENTITY_EMP = "employee"; //従業員
     String ENTITY_REP = "report"; //日報
+    String ENTITY_MET = "meeting"; //商談
 
     //JPQL内パラメータ
     String JPQL_PARM_CODE = "code"; //社員番号
@@ -74,5 +88,16 @@ public interface JpaConst {
     //指定した従業員が作成した日報の件数を取得する
     String Q_REP_COUNT_ALL_MINE = ENTITY_REP + ".countAllMine";
     String Q_REP_COUNT_ALL_MINE_DEF = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :" + JPQL_PARM_EMPLOYEE;
-
+    //全ての商談をidの降順に取得する
+    String Q_MET_GET_ALL = ENTITY_MET + ".getAll";
+    String Q_MET_GET_ALL_DEF = "SELECT m FROM Meeting AS m ORDER BY m.id DESC";
+    //全ての商談の件数を取得する
+    String Q_MET_COUNT = ENTITY_MET + ".count";
+    String Q_MET_COUNT_DEF = "SELECT COUNT(m) FROM Meeting AS m";
+    //指定した従業員が作成した商談を全件idの降順で取得する
+    String Q_MET_GET_ALL_MINE = ENTITY_MET + ".getAllMine";
+    String Q_MET_GET_ALL_MINE_DEF = "SELECT m FROM Meeting AS m WHERE m.employee = :" + JPQL_PARM_EMPLOYEE + " ORDER BY m.id DESC";
+    //指定した従業員が作成した商談の件数を取得する
+    String Q_MET_COUNT_ALL_MINE = ENTITY_MET + ".countAllMine";
+    String Q_MET_COUNT_ALL_MINE_DEF = "SELECT COUNT(m) FROM Meeting AS m WHERE m.employee = :" + JPQL_PARM_EMPLOYEE;
 }

@@ -7,20 +7,20 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import actions.views.EmployeeView;
-import actions.views.ReportView;
+import actions.views.MeetingView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
-import services.ReportService;
+import services.MeetingService;
 
 /**
- * 日報に関する処理を行うActionクラス
+ * 商談に関する処理を行うActionクラス
  *
  */
-public class ReportAction extends ActionBase {
+public class MeetingAction extends ActionBase {
 
-    private ReportService service;
+    private MeetingService service;
 
     /**
      * メソッドを実行する
@@ -28,7 +28,7 @@ public class ReportAction extends ActionBase {
     @Override
     public void process() throws ServletException, IOException {
 
-        service = new ReportService();
+        service = new MeetingService();
 
         //メソッドを実行
         invoke();
@@ -42,15 +42,15 @@ public class ReportAction extends ActionBase {
      */
     public void index() throws ServletException, IOException {
 
-        //指定されたページ数の一覧画面に表示する日報データを取得
+        //指定されたページ数の一覧画面に表示する商談データを取得
         int page = getPage();
-        List<ReportView> reports = service.getAllPerPage(page);
+        List<MeetingView> meetings = service.getAllPerPage(page);
 
-        //全日報データの件数を取得
-        long reportsCount = service.countAll();
+        //全商談データの件数を取得
+        long meetingsCount = service.countAll();
 
-        putRequestScope(AttributeConst.REPORTS, reports); //取得した日報データ
-        putRequestScope(AttributeConst.REP_COUNT, reportsCount); //全ての日報データの件数
+        putRequestScope(AttributeConst.MEETINGS, meetings); //取得した商談データ
+        putRequestScope(AttributeConst.MET_COUNT, meetingsCount); //全ての商談データの件数
         putRequestScope(AttributeConst.PAGE, page); //ページ数
         putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
 
@@ -73,13 +73,13 @@ public class ReportAction extends ActionBase {
 
         putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
 
-        //日報情報の空インスタンスに、日報の日付＝今日の日付を設定する
-        ReportView rv = new ReportView();
-        rv.setReportDate(LocalDate.now());
-        putRequestScope(AttributeConst.REPORT, rv); //日付のみ設定済みの日報インスタンス
+        //商談情報の空インスタンスに、商談の日付＝今日の日付を設定する
+        MeetingView mv = new MeetingView();
+        mv.setMeetingDate(LocalDate.now());
+        putRequestScope(AttributeConst.MEETING, mv); //日付のみ設定済みの商談インスタンス
 
         //新規登録画面を表示
-        forward(ForwardConst.FW_REP_NEW);
+        forward(ForwardConst.FW_MET_NEW);
 
     }
     /**
@@ -92,40 +92,42 @@ public class ReportAction extends ActionBase {
         //CSRF対策 tokenのチェック
         if (checkToken()) {
 
-            //日報の日付が入力されていなければ、今日の日付を設定
+            //商談の日付が入力されていなければ、今日の日付を設定
             LocalDate day = null;
-            if (getRequestParam(AttributeConst.REP_DATE) == null
-                    || getRequestParam(AttributeConst.REP_DATE).equals("")) {
+            if (getRequestParam(AttributeConst.MET_DATE) == null
+                    || getRequestParam(AttributeConst.MET_DATE).equals("")) {
                 day = LocalDate.now();
             } else {
-                day = LocalDate.parse(getRequestParam(AttributeConst.REP_DATE));
+                day = LocalDate.parse(getRequestParam(AttributeConst.MET_DATE));
             }
 
             //セッションからログイン中の従業員情報を取得
             EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
 
-            //パラメータの値をもとに日報情報のインスタンスを作成する
-            ReportView rv = new ReportView(
+            //パラメータの値をもとに商談情報のインスタンスを作成する
+            MeetingView mv = new MeetingView(
                     null,
-                    ev, //ログインしている従業員を、日報作成者として登録する
+                    ev, //ログインしている従業員を、商談作成者として登録する
                     day,
-                    getRequestParam(AttributeConst.REP_TITLE),
-                    getRequestParam(AttributeConst.REP_CONTENT),
+                    getRequestParam(AttributeConst.MET_COMPANY_NAME),
+                    getRequestParam(AttributeConst.MET_CUSTOMER_NAME),
+                    getRequestParam(AttributeConst.MET_CONTENT),
+                    getRequestParam(AttributeConst.MET_STATUS),
                     null,
                     null);
 
-            //日報情報登録
-            List<String> errors = service.create(rv);
+            //商談情報登録
+            List<String> errors = service.create(mv);
 
             if (errors.size() > 0) {
                 //登録中にエラーがあった場合
 
                 putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                putRequestScope(AttributeConst.REPORT, rv);//入力された日報情報
+                putRequestScope(AttributeConst.MEETING, mv);//入力された商談情報
                 putRequestScope(AttributeConst.ERR, errors);//エラーのリスト
 
                 //新規登録画面を再表示
-                forward(ForwardConst.FW_REP_NEW);
+                forward(ForwardConst.FW_MET_NEW);
 
             } else {
                 //登録中にエラーがなかった場合
@@ -134,7 +136,7 @@ public class ReportAction extends ActionBase {
                 putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
 
                 //一覧画面にリダイレクト
-                redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
+                redirect(ForwardConst.ACT_MET, ForwardConst.CMD_INDEX);
             }
         }
     }
@@ -145,19 +147,19 @@ public class ReportAction extends ActionBase {
      */
     public void show() throws ServletException, IOException {
 
-        //idを条件に日報データを取得する
-        ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+        //idを条件に商談データを取得する
+        MeetingView mv = service.findOne(toNumber(getRequestParam(AttributeConst.MET_ID)));
 
-        if (rv == null) {
-            //該当の日報データが存在しない場合はエラー画面を表示
+        if (mv == null) {
+            //該当の商談データが存在しない場合はエラー画面を表示
             forward(ForwardConst.FW_ERR_UNKNOWN);
 
         } else {
 
-            putRequestScope(AttributeConst.REPORT, rv); //取得した日報データ
+            putRequestScope(AttributeConst.MEETING, mv); //取得した商談データ
 
             //詳細画面を表示
-            forward(ForwardConst.FW_REP_SHOW);
+            forward(ForwardConst.FW_MET_SHOW);
         }
     }
     /**
@@ -167,24 +169,24 @@ public class ReportAction extends ActionBase {
      */
     public void edit() throws ServletException, IOException {
 
-        //idを条件に日報データを取得する
-        ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+        //idを条件に商談データを取得する
+        MeetingView mv = service.findOne(toNumber(getRequestParam(AttributeConst.MET_ID)));
 
         //セッションからログイン中の従業員情報を取得
         EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
 
-        if (rv == null || ev.getId() != rv.getEmployee().getId()) {
-            //該当の日報データが存在しない、または
-            //ログインしている従業員が日報の作成者でない場合はエラー画面を表示
+        if (mv == null || ev.getId() != mv.getEmployee().getId()) {
+            //該当の商談データが存在しない、または
+            //ログインしている従業員が商談の作成者でない場合はエラー画面を表示
             forward(ForwardConst.FW_ERR_UNKNOWN);
 
         } else {
 
             putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-            putRequestScope(AttributeConst.REPORT, rv); //取得した日報データ
+            putRequestScope(AttributeConst.MEETING, mv); //取得した商談データ
 
             //編集画面を表示
-            forward(ForwardConst.FW_REP_EDIT);
+            forward(ForwardConst.FW_MET_EDIT);
         }
 
     }
@@ -198,26 +200,28 @@ public class ReportAction extends ActionBase {
         //CSRF対策 tokenのチェック
         if (checkToken()) {
 
-            //idを条件に日報データを取得する
-            ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+            //idを条件に商談データを取得する
+            MeetingView mv = service.findOne(toNumber(getRequestParam(AttributeConst.MET_ID)));
 
-            //入力された日報内容を設定する
-            rv.setReportDate(toLocalDate(getRequestParam(AttributeConst.REP_DATE)));
-            rv.setTitle(getRequestParam(AttributeConst.REP_TITLE));
-            rv.setReportContent(getRequestParam(AttributeConst.REP_CONTENT));
+            //入力された商談内容を設定する
+            mv.setMeetingDate(toLocalDate(getRequestParam(AttributeConst.MET_DATE)));
+            mv.setCompanyName(getRequestParam(AttributeConst.MET_COMPANY_NAME));
+            mv.setCustomerName(getRequestParam(AttributeConst.MET_CUSTOMER_NAME));
+            mv.setMeetingContent(getRequestParam(AttributeConst.MET_CONTENT));
+            mv.setStatus(getRequestParam(AttributeConst.MET_STATUS));
 
-            //日報データを更新する
-            List<String> errors = service.update(rv);
+            //商談データを更新する
+            List<String> errors = service.update(mv);
 
             if (errors.size() > 0) {
                 //更新中にエラーが発生した場合
 
                 putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                putRequestScope(AttributeConst.REPORT, rv); //入力された日報情報
+                putRequestScope(AttributeConst.MEETING, mv); //入力された商談情報
                 putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
 
                 //編集画面を再表示
-                forward(ForwardConst.FW_REP_EDIT);
+                forward(ForwardConst.FW_MET_EDIT);
             } else {
                 //更新中にエラーがなかった場合
 
@@ -225,7 +229,7 @@ public class ReportAction extends ActionBase {
                 putSessionScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
 
                 //一覧画面にリダイレクト
-                redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
+                redirect(ForwardConst.ACT_MET, ForwardConst.CMD_INDEX);
 
             }
         }
