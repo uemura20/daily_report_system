@@ -54,6 +54,7 @@ public class AuthAction extends ActionBase {
         forward(ForwardConst.FW_LOGIN);
     }
 
+
     /**
      * ログイン処理を行う
      * @throws ServletException
