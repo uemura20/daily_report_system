@@ -24,8 +24,20 @@
                     <td><fmt:formatDate value='${meetingDay}' pattern='yyyy-MM-dd' /></td>
                 </tr>
                 <tr>
+                    <th>会社名</th>
+                    <td><pre><c:out value="${meeting.company_name}" /></pre></td>
+                </tr>
+                <tr>
+                    <th>お客様名</th>
+                    <td><pre><c:out value="${meeting.customer_name}" /></pre></td>
+                </tr>
+                <tr>
                     <th>内容</th>
-                    <td><pre><c:out value="${meeting.meetingContent}" /></pre></td>
+                    <td><pre><c:out value="${meeting.meeting_content}" /></pre></td>
+                </tr>
+                <tr>
+                    <th>進捗状況</th>
+                    <td><pre><c:out value="${meeting.status}" /></pre></td>
                 </tr>
                 <tr>
                     <th>登録日時</th>
@@ -42,7 +54,7 @@
 
         <c:if test="${sessionScope.login_employee.id == meeting.employee.id}">
             <p>
-                <a href="<c:url value='?action=${actMet}&command=${commEdt}&id=${report.id}' />">この商談を編集する</a>
+                <a href="<c:url value='?action=${actMet}&command=${commEdt}&id=${meeting.id}' />">この商談を編集する</a>
             </p>
         </c:if>
 

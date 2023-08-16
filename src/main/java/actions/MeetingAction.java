@@ -62,7 +62,7 @@ public class MeetingAction extends ActionBase {
         }
 
         //一覧画面を表示
-        forward(ForwardConst.FW_REP_INDEX);
+        forward(ForwardConst.FW_MET_INDEX);
     }
     /**
      * 新規登録画面を表示する
@@ -205,8 +205,8 @@ public class MeetingAction extends ActionBase {
 
             //入力された商談内容を設定する
             mv.setMeetingDate(toLocalDate(getRequestParam(AttributeConst.MET_DATE)));
-            mv.setCompanyName(getRequestParam(AttributeConst.MET_COMPANY_NAME));
-            mv.setCustomerName(getRequestParam(AttributeConst.MET_CUSTOMER_NAME));
+            mv.setCompany_name(getRequestParam(AttributeConst.MET_COMPANY_NAME));
+            mv.setCustomer_name(getRequestParam(AttributeConst.MET_CUSTOMER_NAME));
             mv.setMeeting_content(getRequestParam(AttributeConst.MET_CONTENT));
             mv.setStatus(getRequestParam(AttributeConst.MET_STATUS));
 

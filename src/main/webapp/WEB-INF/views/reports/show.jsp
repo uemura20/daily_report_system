@@ -25,7 +25,7 @@
                 </tr>
                 <tr>
                     <th>内容</th>
-                    <td><pre><c:out value="${report.reportCsontent}" /></pre></td>
+                    <td><pre><c:out value="${report.report_content}" /></pre></td>
                 </tr>
                 <tr>
                     <th>登録日時</th>

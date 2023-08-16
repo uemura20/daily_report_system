@@ -20,14 +20,14 @@ public class MeetingValidator {
         List<String> errors = new ArrayList<String>();
 
         //会社名のチェック
-        String companyNameError = validateCompanyName(mv.getCompanyName());
-        if (!companyNameError.equals("")) {
-            errors.add(companyNameError);
+        String company_nameError = validateCompany_name(mv.getCompany_name());
+        if (!company_nameError.equals("")) {
+            errors.add(company_nameError);
         }
         //お客様名のチェック
-        String customerNameError = validateCustomerName(mv.getCustomerName());
-        if (!customerNameError.equals("")) {
-            errors.add(customerNameError);
+        String customer_nameError = validateCustomer_name(mv.getCustomer_name());
+        if (!customer_nameError.equals("")) {
+            errors.add(customer_nameError);
         }
 
         //内容のチェック
@@ -49,9 +49,9 @@ public class MeetingValidator {
      * @param companyName 会社名
      * @return エラーメッセージ
      */
-    private static String validateCompanyName(String comapanyName) {
-        if (comapanyName == null || comapanyName.equals("")) {
-            return MessageConst.E_NOTITLE.getMessage();
+    private static String validateCompany_name(String comapany_name) {
+        if (comapany_name == null || comapany_name.equals("")) {
+            return MessageConst.E_NOCOMPANY_NAME.getMessage();
         }
 
         //入力値がある場合は空文字を返却
@@ -63,9 +63,9 @@ public class MeetingValidator {
      * @param customerName お客様名
      * @return エラーメッセージ
      */
-    private static String validateCustomerName(String customerName) {
-        if (customerName == null || customerName.equals("")) {
-            return MessageConst.E_NOTITLE.getMessage();
+    private static String validateCustomer_name(String customer_name) {
+        if (customer_name == null || customer_name.equals("")) {
+            return MessageConst.E_NOCUSTOMER_NAME.getMessage();
         }
 
         //入力値がある場合は空文字を返却
@@ -93,7 +93,7 @@ public class MeetingValidator {
      */
     private static String validateStatus(String status) {
         if (status == null || status.equals("")) {
-            return MessageConst.E_NOTITLE.getMessage();
+            return MessageConst.E_NOSTATUS.getMessage();
         }
 
         //入力値がある場合は空文字を返却

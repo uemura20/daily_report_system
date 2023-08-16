@@ -21,7 +21,9 @@
                 <tr>
                     <th class="meeting_name">氏名</th>
                     <th class="meeting_date">日付</th>
-                    <th class="meeting_title">タイトル</th>
+                    <th class="meeting_company_name">会社名</th>
+                    <th class="meeting_customer_name">お客様名</th>
+                    <th class="meeting_status">進捗状況</th>
                     <th class="meeting_action">操作</th>
                 </tr>
                 <c:forEach var="meeting" items="${meetings}" varStatus="status">
@@ -30,7 +32,9 @@
                     <tr class="row${status.count % 2}">
                         <td class="meeting_name"><c:out value="${meeting.employee.name}" /></td>
                         <td class="meeting_date"><fmt:formatDate value='${meetingDay}' pattern='yyyy-MM-dd' /></td>
-                        <td class="meeting_title">${report.title}</td>
+                        <td class="meeting_company_name"">${meeting.company_name}</td>
+                        <td class="meeting_customer_name">${meeting.customer_name}</td>
+                        <td class="meeting_status">${meeting.status}</td>
                         <td class="meeting_action"><a href="<c:url value='?action=${actMet}&command=${commShow}&id=${meeting.id}' />">詳細を見る</a></td>
                     </tr>
                 </c:forEach>

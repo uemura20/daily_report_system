@@ -21,8 +21,8 @@ public class MeetingConverter {
                 mv.getId(),
                 EmployeeConverter.toModel(mv.getEmployee()),
                 mv.getMeetingDate(),
-                mv.getCompanyName(),
-                mv.getCustomerName(),
+                mv.getCompany_name(),
+                mv.getCustomer_name(),
                 mv.getMeeting_content(),
                 mv.getStatus(),
                 mv.getCreatedAt(),
@@ -76,8 +76,8 @@ public class MeetingConverter {
         m.setId(mv.getId());
         m.setEmployee(EmployeeConverter.toModel(mv.getEmployee()));
         m.setMeetingDate(mv.getMeetingDate());
-        m.setCompany_name(mv.getCompanyName());
-        m.setCustomer_name(mv.getCustomerName());
+        m.setCompany_name(mv.getCompany_name());
+        m.setCustomer_name(mv.getCustomer_name());
         m.setMeeting_content(mv.getMeeting_content());
         m.setStatus(mv.getStatus());
         m.setCreatedAt(mv.getCreatedAt());

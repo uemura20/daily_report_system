@@ -36,12 +36,12 @@ public class MeetingView {
     /**
      * 商談の会社名
      */
-    private String companyName;
+    private String company_name;
 
     /**
      * 商談のお客様名
      */
-    private String customerName;
+    private String customer_name;
 
     /**
      * 商談の内容
