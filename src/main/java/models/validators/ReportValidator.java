@@ -26,9 +26,9 @@ public class ReportValidator {
         }
 
         //内容のチェック
-        String reportContentError = validateReportContent(rv.getReportContent());
-        if (!reportContentError.equals("")) {
-            errors.add(reportContentError);
+        String report_contentError = validateReport_content(rv.getReport_content());
+        if (!report_contentError.equals("")) {
+            errors.add(report_contentError);
         }
 
         return errors;
@@ -53,8 +53,8 @@ public class ReportValidator {
      * @param content 内容
      * @return エラーメッセージ
      */
-    private static String validateReportContent(String reportContent) {
-        if (reportContent == null || reportContent.equals("")) {
+    private static String validateReport_content(String report_content) {
+        if (report_content == null || report_content.equals("")) {
             return MessageConst.E_NOCONTENT.getMessage();
         }
 

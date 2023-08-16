@@ -80,7 +80,7 @@ public class Report {
      */
     @Lob
     @Column(name = JpaConst.REP_COL_CONTENT, nullable = false)
-    private String reportContent;
+    private String report_content;
 
     /**
      * 登録日時

@@ -88,7 +88,7 @@ public class Meeting {
      */
     @Lob
     @Column(name = JpaConst.MET_COL_CONTENT, nullable = false)
-    private String meetingContent;
+    private String meeting_content;
 
     /**
      * 商談の進捗状況

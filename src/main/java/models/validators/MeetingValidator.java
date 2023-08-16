@@ -31,9 +31,9 @@ public class MeetingValidator {
         }
 
         //内容のチェック
-        String meetingContentError = validateMeetingContent(mv.getMeetingContent());
-        if (!meetingContentError.equals("")) {
-            errors.add(meetingContentError);
+        String meeting_contentError = validateMeeting_content(mv.getMeeting_content());
+        if (!meeting_contentError.equals("")) {
+            errors.add(meeting_contentError);
         }
         //進捗状況のチェック
         String statusError = validateStatus(mv.getStatus());
@@ -77,8 +77,8 @@ public class MeetingValidator {
      * @param content 内容
      * @return エラーメッセージ
      */
-    private static String validateMeetingContent(String meetingContent) {
-        if (meetingContent == null || meetingContent.equals("")) {
+    private static String validateMeeting_content(String meeting_content) {
+        if (meeting_content == null || meeting_content.equals("")) {
             return MessageConst.E_NOCONTENT.getMessage();
         }
 

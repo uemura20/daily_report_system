@@ -207,7 +207,7 @@ public class MeetingAction extends ActionBase {
             mv.setMeetingDate(toLocalDate(getRequestParam(AttributeConst.MET_DATE)));
             mv.setCompanyName(getRequestParam(AttributeConst.MET_COMPANY_NAME));
             mv.setCustomerName(getRequestParam(AttributeConst.MET_CUSTOMER_NAME));
-            mv.setMeetingContent(getRequestParam(AttributeConst.MET_CONTENT));
+            mv.setMeeting_content(getRequestParam(AttributeConst.MET_CONTENT));
             mv.setStatus(getRequestParam(AttributeConst.MET_STATUS));
 
             //商談データを更新する

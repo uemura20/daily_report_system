@@ -23,7 +23,7 @@ public class MeetingConverter {
                 mv.getMeetingDate(),
                 mv.getCompanyName(),
                 mv.getCustomerName(),
-                mv.getMeetingContent(),
+                mv.getMeeting_content(),
                 mv.getStatus(),
                 mv.getCreatedAt(),
                 mv.getUpdatedAt());
@@ -46,7 +46,7 @@ public class MeetingConverter {
                 m.getMeetingDate(),
                 m.getCompany_name(),
                 m.getCustomer_name(),
-                m.getMeetingContent(),
+                m.getMeeting_content(),
                 m.getStatus(),
                 m.getCreatedAt(),
                 m.getUpdatedAt());
@@ -78,7 +78,7 @@ public class MeetingConverter {
         m.setMeetingDate(mv.getMeetingDate());
         m.setCompany_name(mv.getCompanyName());
         m.setCustomer_name(mv.getCustomerName());
-        m.setMeetingContent(mv.getMeetingContent());
+        m.setMeeting_content(mv.getMeeting_content());
         m.setStatus(mv.getStatus());
         m.setCreatedAt(mv.getCreatedAt());
         m.setUpdatedAt(mv.getUpdatedAt());

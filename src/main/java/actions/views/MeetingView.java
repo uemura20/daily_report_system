@@ -46,7 +46,7 @@ public class MeetingView {
     /**
      * 商談の内容
      */
-    private String meetingContent;
+    private String meeting_content;
 
     /**
      * 商談の進捗状況

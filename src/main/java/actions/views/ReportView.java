@@ -41,7 +41,7 @@ public class ReportView {
     /**
      * 日報の内容
      */
-    private String reportContent;
+    private String report_content;
 
     /**
      * 登録日時
