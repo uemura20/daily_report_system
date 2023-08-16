@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import actions.views.EmployeeView;
+import actions.views.MeetingView;
 import actions.views.ReportView;
 import constants.AttributeConst;
 import constants.ForwardConst;
@@ -136,7 +137,49 @@ public class ReportAction extends ActionBase {
                 //一覧画面にリダイレクト
                 redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
             }
+            //商談の日付が入力されていなければ、今日の日付を設定
+            day = null;
+            if (getRequestParam(AttributeConst.MET_DATE) == null
+                    || getRequestParam(AttributeConst.MET_DATE).equals("")) {
+                day = LocalDate.now();
+            } else {
+                day = LocalDate.parse(getRequestParam(AttributeConst.MET_DATE));
+            }
+
+            //セッションからログイン中の従業員情報を取得
+            ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+
+            //パラメータの値をもとに商談情報のインスタンスを作成する
+            MeetingView mv = new MeetingView(
+                    null,
+                    ev, //ログインしている従業員を、商談作成者として登録する
+                    day,
+                    getRequestParam(AttributeConst.MET_COMPANY_NAME),
+                    getRequestParam(AttributeConst.MET_CUSTOMER_NAME),
+                    getRequestParam(AttributeConst.MET_CONTENT),
+                    getRequestParam(AttributeConst.MET_STATUS),
+                    null,
+                    null);
+
+            //商談情報登録
+            errors = service.create(mv);
+
+            if (errors.size() > 0) {
+                //登録中にエラーがあった場合
+
+                putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                putRequestScope(AttributeConst.MEETING, mv);//入力された商談情報
+                putRequestScope(AttributeConst.ERR, errors);//エラーのリスト
+
+            } else {
+                //登録中にエラーがなかった場合
+
+                //セッションに登録完了のフラッシュメッセージを設定
+                putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
+
+            }
         }
+
     }
     /**
      * 詳細画面を表示する

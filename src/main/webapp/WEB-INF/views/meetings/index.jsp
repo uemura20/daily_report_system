@@ -54,7 +54,6 @@
                 </c:choose>
             </c:forEach>
         </div>
-        <p><a href="<c:url value='?action=${actMet}&command=${commNew}' />">新規商談の登録</a></p>
 
     </c:param>
 </c:import>

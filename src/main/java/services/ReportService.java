@@ -5,10 +5,13 @@ import java.util.List;
 
 import actions.views.EmployeeConverter;
 import actions.views.EmployeeView;
+import actions.views.MeetingConverter;
+import actions.views.MeetingView;
 import actions.views.ReportConverter;
 import actions.views.ReportView;
 import constants.JpaConst;
 import models.Report;
+import models.validators.MeetingValidator;
 import models.validators.ReportValidator;
 
 /**
@@ -96,6 +99,18 @@ public class ReportService extends ServiceBase {
         //バリデーションで発生したエラーを返却（エラーがなければ0件の空リスト）
         return errors;
     }
+    public List<String> create(MeetingView mv) {
+        List<String> errors = MeetingValidator.validate(mv);
+        if (errors.size() == 0) {
+            LocalDateTime ldt = LocalDateTime.now();
+            mv.setCreatedAt(ldt);
+            mv.setUpdatedAt(ldt);
+            createInternal(mv);
+        }
+
+        //バリデーションで発生したエラーを返却（エラーがなければ0件の空リスト）
+        return errors;
+    }
 
     /**
      * 画面から入力された日報の登録内容を元に、日報データを更新する
@@ -137,6 +152,14 @@ public class ReportService extends ServiceBase {
 
         em.getTransaction().begin();
         em.persist(ReportConverter.toModel(rv));
+        em.getTransaction().commit();
+
+    }
+
+    private void createInternal(MeetingView mv) {
+
+        em.getTransaction().begin();
+        em.persist(MeetingConverter.toModel(mv));
         em.getTransaction().commit();
 
     }
