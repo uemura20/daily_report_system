@@ -65,6 +65,7 @@ public class ReportAction extends ActionBase {
         //一覧画面を表示
         forward(ForwardConst.FW_REP_INDEX);
     }
+
     /**
      * 新規登録画面を表示する
      * @throws ServletException
@@ -83,6 +84,7 @@ public class ReportAction extends ActionBase {
         forward(ForwardConst.FW_REP_NEW);
 
     }
+
     /**
      * 新規登録を行う
      * @throws ServletException
@@ -150,37 +152,47 @@ public class ReportAction extends ActionBase {
             ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
 
             //パラメータの値をもとに商談情報のインスタンスを作成する
-            MeetingView mv = new MeetingView(
-                    null,
-                    ev, //ログインしている従業員を、商談作成者として登録する
-                    day,
-                    getRequestParam(AttributeConst.MET_COMPANY_NAME),
-                    getRequestParam(AttributeConst.MET_CUSTOMER_NAME),
-                    getRequestParam(AttributeConst.MET_CONTENT),
-                    getRequestParam(AttributeConst.MET_STATUS),
-                    null,
-                    null);
 
-            //商談情報登録
-            errors = service.create(mv);
+            String[] companyNameArr = request.getParameterValues(AttributeConst.MET_COMPANY_NAME.getValue());
+            String[] customerNameArr = request.getParameterValues(AttributeConst.MET_CUSTOMER_NAME.getValue());
+            String[] meetingContentArr = request.getParameterValues(AttributeConst.MET_CONTENT.getValue());
+            String[] statusArr = request.getParameterValues(AttributeConst.MET_STATUS.getValue());
 
-            if (errors.size() > 0) {
-                //登録中にエラーがあった場合
+            if (companyNameArr != null && customerNameArr != null && meetingContentArr != null && statusArr != null) {
+                for (int i = 0; i < companyNameArr.length; i++) {
+                    MeetingView mv = new MeetingView(
+                            null,
+                            ev, //ログインしている従業員を、商談作成者として登録する
+                            day,
+                            companyNameArr[i],
+                            customerNameArr[i],
+                            meetingContentArr[i],
+                            statusArr[i],
+                            null,
+                            null);
 
-                putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                putRequestScope(AttributeConst.MEETING, mv);//入力された商談情報
-                putRequestScope(AttributeConst.ERR, errors);//エラーのリスト
+                    //商談情報登録
+                    errors = service.create(mv);
 
-            } else {
-                //登録中にエラーがなかった場合
+                    if (errors.size() > 0) {
+                        //登録中にエラーがあった場合
 
-                //セッションに登録完了のフラッシュメッセージを設定
-                putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
+                        putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                        putRequestScope(AttributeConst.MEETING, mv);//入力された商談情報
+                        putRequestScope(AttributeConst.ERR, errors);//エラーのリスト
 
+                    } else {
+                        //登録中にエラーがなかった場合
+
+                        //セッションに登録完了のフラッシュメッセージを設定
+                        putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
+                    }
+                }
             }
         }
 
     }
+
     /**
      * 詳細画面を表示する
      * @throws ServletException
@@ -203,6 +215,7 @@ public class ReportAction extends ActionBase {
             forward(ForwardConst.FW_REP_SHOW);
         }
     }
+
     /**
      * 編集画面を表示する
      * @throws ServletException
@@ -231,6 +244,7 @@ public class ReportAction extends ActionBase {
         }
 
     }
+
     /**
      * 更新を行う
      * @throws ServletException
