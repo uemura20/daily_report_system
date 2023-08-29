@@ -3,6 +3,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="constants.AttributeConst" %>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).on("click", ".add", function() {
+    $(this).parent().clone(true).insertAfter($(this).parent());
+});
+$(document).on("click", ".del", function() {
+    var target = $(this).parent();
+    if (target.parent().children().length > 1) {
+        target.remove();
+    }
+});
+</script>
+
 <c:if test="${errors != null}">
     <div id="flush_error">
         入力内容にエラーがあります。<br />
@@ -29,7 +42,10 @@
 <textarea  name="${AttributeConst.REP_CONTENT.getValue()}" id="${AttributeConst.REP_CONTENT.getValue()}" rows="10" cols="50">${report.report_content}</textarea>
 <br /><br />
 
-<h1>【商談 1】</h1>
+<div id="input_pluralBox">
+    <div id="input_plural">
+<br /><br />
+<h1>【商談】</h1>
 <br /><br />
 
 <label for="${AttributeConst.MET_COMPANY_NAME.getValue()}">会社名</label><br />
@@ -49,27 +65,12 @@
 <br /><br />
 
 <input type="hidden" name="${AttributeConst.MET_ID.getValue()}" value="${meeting.id}" />
-
-<h1>【商談 2】</h1>
+        <input type="button" value="＋" class="add pluralBtn">
+        <input type="button" value="－" class="del pluralBtn">
+    </div>
+</div>
 <br /><br />
 
-<label for="${AttributeConst.MET_COMPANY_NAME.getValue()}">会社名</label><br />
-<input type="text" name="${AttributeConst.MET_COMPANY_NAME.getValue()}" id="${AttributeConst.MET_COMPANY_NAME.getValue()}" value="${meeting.company_name}" />
-<br /><br />
-
-<label for="${AttributeConst.MET_CUSTOMER_NAME.getValue()}">お客様名</label><br />
-<input type="text" name="${AttributeConst.MET_CUSTOMER_NAME.getValue()}" id="${AttributeConst.MET_CUSTOMER_NAME.getValue()}" value="${meeting.customer_name}" />
-<br /><br />
-
-<label for="${AttributeConst.MET_CONTENT.getValue()}">内容</label><br />
-<textarea  name="${AttributeConst.MET_CONTENT.getValue()}" id="${AttributeConst.MET_CONTENT.getValue()}" rows="10" cols="50">${meeting.meeting_content}</textarea>
-<br /><br />
-
-<label for="${AttributeConst.MET_STATUS.getValue()}">進捗状況</label><br />
-<input type="text" name="${AttributeConst.MET_STATUS.getValue()}" id="${AttributeConst.MET_STATUS.getValue()}" value="${meeting.status}" />
-<br /><br />
-
-<input type="hidden" name="${AttributeConst.MET_ID.getValue()}" value="${meeting.id}" />
 
 <input type="hidden" name="${AttributeConst.REP_ID.getValue()}" value="${report.id}" />
 <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
