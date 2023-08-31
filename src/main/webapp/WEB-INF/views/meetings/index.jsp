@@ -3,6 +3,127 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="constants.ForwardConst" %>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/js/jquery.tablesorter.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/css/theme.default.min.css">
+
+<script>
+function myFunctionName() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput4");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("report_list");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function myFunctionDate() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput5");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("report_list");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+
+function myFunctionCompanyName() {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput6");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("report_list");
+      tr = table.getElementsByTagName("tr");
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+
+function myFunctionCustomerName() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput7");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("report_list");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[3];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+
+function myFunctionStatus() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput8");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("report_list");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[4];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+
+$(document).ready(function() {
+    $('#report_list').tablesorter();
+});
+</script>
+
 <c:set var="actMet" value="${ForwardConst.ACT_MET.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commShow" value="${ForwardConst.CMD_SHOW.getValue()}" />
@@ -16,8 +137,14 @@
             </div>
         </c:if>
         <h2>商談　一覧</h2>
+        <input type="text" id="myInput4" onkeyup="myFunctionName()" placeholder="氏名を入力してください。">
+        <input type="text" id="myInput5" onkeyup="myFunctionDate()" placeholder="日付を入力してください。">
+        <input type="text" id="myInput6" onkeyup="myFunctionCompanyName()" placeholder="会社名を入力してください。">
+        <input type="text" id="myInput7" onkeyup="myFunctionCustomerName()" placeholder="お客様名を入力してください。">
+        <input type="text" id="myInput8" onkeyup="myFunctionStatus()" placeholder="進捗状況を入力してください。">
         <table id="report_list">
             <tbody>
+                <thead>
                 <tr>
                     <th class="meeting_name">氏名</th>
                     <th class="meeting_date">日付</th>
@@ -26,6 +153,7 @@
                     <th class="meeting_status">進捗状況</th>
                     <th class="meeting_action">操作</th>
                 </tr>
+                </thead>
                 <c:forEach var="meeting" items="${meetings}" varStatus="status">
                     <fmt:parseDate value="${meeting.meetingDate}" pattern="yyyy-MM-dd" var="meetingDay" type="date" />
 
