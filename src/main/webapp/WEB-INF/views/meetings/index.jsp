@@ -9,6 +9,26 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/css/theme.default.min.css">
 
 <script>
+const checkbox3 = document.getElementsByClassName('checks')
+
+function checkAllBox(trueOrFalse) {
+  for(i = 0; i < checkbox3.length; i++) {
+    checkbox3[i].checked = trueOrFalse
+  }
+}
+
+function getValue() {
+    var checks = document.getElementsByClassName('checks');
+    var str = '';
+
+    for ( i = 0; i < ${meetings_count}; i++) {
+        if ( checks[i].checked === true ) {
+            str += checks[i].value + "; ";
+        }
+    }
+    alert(str);
+}
+
 function myFunctionName() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
@@ -158,7 +178,7 @@ $(document).ready(function() {
                     <fmt:parseDate value="${meeting.meetingDate}" pattern="yyyy-MM-dd" var="meetingDay" type="date" />
 
                     <tr class="row${status.count % 2}">
-                        <td class="meeting_name"><c:out value="${meeting.employee.name}" /></td>
+                        <td class="meeting_name"><input type="checkbox" class="checks" value="${meeting.status}" > <c:out value="${meeting.employee.name}" /></td>
                         <td class="meeting_date"><fmt:formatDate value='${meetingDay}' pattern='yyyy-MM-dd' /></td>
                         <td class="meeting_company_name"">${meeting.company_name}</td>
                         <td class="meeting_customer_name">${meeting.customer_name}</td>
@@ -168,6 +188,9 @@ $(document).ready(function() {
                 </c:forEach>
             </tbody>
         </table>
+        <input type="button" onClick="checkAllBox(true)" value="全選択">
+        <input type="button" onClick="checkAllBox(false)" value="全解除"><br><br>
+        <button onclick="getValue()">値を取得</button>
 
         <div id="pagination">
             （全 ${meetings_count} 件）<br />

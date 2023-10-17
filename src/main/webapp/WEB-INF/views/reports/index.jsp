@@ -9,6 +9,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/css/theme.default.min.css">
 
 <script>
+const checkbox3 = document.getElementsByClassName('checks')
+
+function checkAllBox(trueOrFalse) {
+  for(i = 0; i < checkbox3.length; i++) {
+    checkbox3[i].checked = trueOrFalse
+  }
+}
+
 function getValue() {
     var checks = document.getElementsByClassName('checks');
     var str = '';
@@ -132,6 +140,8 @@ $(document).ready(function() {
                 </c:forEach>
             </tbody>
         </table>
+        <input type="button" onClick="checkAllBox(true)" value="全選択">
+        <input type="button" onClick="checkAllBox(false)" value="全解除"><br><br>
         <button onclick="getValue()">値を取得</button>
         <div id="pagination">
             （全 ${reports_count} 件）<br />
