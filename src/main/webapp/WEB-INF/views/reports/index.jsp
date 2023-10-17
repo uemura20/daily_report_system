@@ -9,6 +9,18 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/css/theme.default.min.css">
 
 <script>
+function getValue() {
+    var checks = document.getElementsByClassName('checks');
+    var str = '';
+
+    for ( i = 0; i < ${reports_count}; i++) {
+        if ( checks[i].checked === true ) {
+            str += checks[i].value + "; ";
+        }
+    }
+    alert(str);
+}
+
 function myFunctionName() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
@@ -93,12 +105,14 @@ $(document).ready(function() {
             </div>
         </c:if>
         <h2>日報　一覧</h2>
+
         <input type="text" id="myInput" onkeyup="myFunctionName()" placeholder="氏名を入力してください。">
         <input type="text" id="myInput2" onkeyup="myFunctionDate()" placeholder="日付を入力してください。">
         <input type="text" id="myInput3" onkeyup="myFunctiontitle()" placeholder="タイトルを入力してください。">
         <table id="report_list" class="table table-bordered">
             <tbody>
                 <thead>
+
                 <tr class="header">
                     <th class="report_name">氏名</th>
                     <th class="report_date">日付</th>
@@ -110,7 +124,7 @@ $(document).ready(function() {
                     <fmt:parseDate value="${report.reportDate}" pattern="yyyy-MM-dd" var="reportDay" type="date" />
 
                     <tr class="row${status.count % 2}">
-                        <td class="report_name"><c:out value="${report.employee.name}" /></td>
+                        <td class="report_name"><input type="checkbox" class="checks" value="${report.title}" ><c:out value="${report.employee.name}" /></td>
                         <td class="report_date"><fmt:formatDate value='${reportDay}' pattern='yyyy-MM-dd' /></td>
                         <td class="report_title">${report.title}</td>
                         <td class="report_action"><a href="<c:url value='?action=${actRep}&command=${commShow}&id=${report.id}' />">詳細を見る</a></td>
@@ -118,7 +132,7 @@ $(document).ready(function() {
                 </c:forEach>
             </tbody>
         </table>
-
+        <button onclick="getValue()">値を取得</button>
         <div id="pagination">
             （全 ${reports_count} 件）<br />
             <c:forEach var="i" begin="1" end="${((reports_count - 1) / maxRow) + 1}" step="1">
